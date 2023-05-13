@@ -24,7 +24,7 @@ export function CartContextProvider({ children }) {
     if (cartProducts?.length === 0 && ls) {
       ls.removeItem('cart');
     }
-  }, [cartProducts]);
+  }, [cartProducts, ls]);
 
   useEffect(() => {
     if (ls && ls.getItem('customerInfo')) {
