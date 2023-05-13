@@ -9,13 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/styled-components": "^5.1.26",
+    "axios": "^1.4.0",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
+    "micro": "^10.0.1",
     "mongoose": "^7.0.4",
     "next": "13.3.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
+    "stripe": "^12.4.0",
     "styled-components": "^5.3.9"
   }
 }

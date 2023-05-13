@@ -1,47 +1,97 @@
 import Link from 'next/link';
 import styled from 'styled-components';
 import Center from './Center';
+import { useContext, useState } from 'react';
+import { CartContext } from './CartContext';
+import { BiMenu } from 'react-icons/bi';
 
 const StyledHeader = styled.header`
   background-color: #222;
 `;
-
 const Logo = styled(Link)`
   color: #fff;
   text-decoration: none;
-  padding: 1.5rem 0;
-  font-weight: 500;
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
-
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  padding: 20px 0;
 `;
-
 const StyledNav = styled.nav`
-  display: flex;
-  gap: 1rem;
+  ${(props) =>
+    props.mobileNavActive
+      ? `
+    display: block;
+  `
+      : `
+    display: none;
+  `}
+  z-index: 10;
+  gap: 15px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 70px 20px 20px;
+  background-color: #222;
+  @media screen and (min-width: 768px) {
+    display: flex;
+    position: static;
+    padding: 0;
+  }
 `;
-
 const NavLink = styled(Link)`
+  display: block;
   color: #aaa;
   text-decoration: none;
+  padding: 10px 0;
+  @media screen and (min-width: 768px) {
+    padding: 0;
+  }
+`;
+const NavButton = styled.button`
+  background-color: transparent;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  color: white;
+  cursor: pointer;
+  position: relative;
+  z-index: 20;
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
+`;
+
+const Menu = styled(BiMenu)`
+  font-size: 2rem;
 `;
 
 export default function Header() {
+  const { cartProducts } = useContext(CartContext);
+  const [mobileNavActive, setMobileNavActive] = useState(false);
+
   return (
     <StyledHeader>
       <Center>
         <Wrapper>
           <Logo href='/'>ecommerce</Logo>
-          <StyledNav>
+          <StyledNav mobileNavActive={mobileNavActive}>
             <NavLink href='/'>Home</NavLink>
             <NavLink href='/products'>All Products</NavLink>
             <NavLink href='/categories'>Categories</NavLink>
             <NavLink href='/account'>Account</NavLink>
-            <NavLink href='/cart'>Cart (0)</NavLink>
+            <NavLink href='/cart'>Cart ({cartProducts.length})</NavLink>
           </StyledNav>
+          <NavButton onClick={() => setMobileNavActive((prev) => !mobileNavActive)}>
+            <Menu />
+          </NavButton>
         </Wrapper>
       </Center>
     </StyledHeader>

@@ -4,51 +4,77 @@ import styled from 'styled-components';
 import Button from './Button';
 import { BiCart } from 'react-icons/bi';
 import ButtonLink from './ButtonLink';
+import { useContext } from 'react';
+import { CartContext } from './CartContext';
 
 const Bg = styled.div`
   background-color: #222;
   color: #fff;
   padding: 50px 0;
 `;
-
 const Title = styled.h1`
   margin: 0;
   font-weight: normal;
-  font-size: 2.5rem;
-`;
-
-const Desc = styled.p`
-  color: #aaa;
-  font-size: 1rem;
-`;
-
-const ColumnWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 40px;
-
-  img {
-    scale: 1.25;
-    margin-top: 10%;
+  font-size: 1.5rem;
+  @media screen and (min-width: 768px) {
+    font-size: 3rem;
   }
 `;
-
+const Desc = styled.p`
+  color: #aaa;
+  font-size: 0.8rem;
+`;
+const ColumnsWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  img {
+    max-width: 100%;
+    max-height: 200px;
+    display: block;
+    margin: 0 auto;
+  }
+  div:nth-child(1) {
+    order: 2;
+  }
+  @media screen and (min-width: 768px) {
+    grid-template-columns: 1.1fr 0.9fr;
+    div:nth-child(1) {
+      order: 0;
+    }
+    img {
+      max-width: 100%;
+    }
+  }
+`;
 const Column = styled.div`
   display: flex;
   align-items: center;
-  flex-direction: column;
 `;
-
 const ButtonsWrapper = styled.div`
   display: flex;
-  gap: 0.75rem;
+  gap: 10px;
+  margin-top: 25px;
+`;
+
+const Img = styled(Image)`
+  object-fit: contain;
+  width: 100% !important;
+  position: relative !important;
+  height: unset !important;
 `;
 
 export default function Featured({ product }) {
+  const { addProduct } = useContext(CartContext);
+
+  const addFeaturedToCart = () => {
+    addProduct(product._id);
+  };
+
   return (
     <Bg>
       <Center>
-        <ColumnWrapper>
+        <ColumnsWrapper>
           <Column>
             <div>
               <Title>{product.title}</Title>
@@ -57,7 +83,7 @@ export default function Featured({ product }) {
                 <ButtonLink href={`/products/${product.id}`} outline={1} white={1} size='l'>
                   Read More
                 </ButtonLink>
-                <Button primary size='l'>
+                <Button size='l' white onClick={addFeaturedToCart}>
                   <BiCart />
                   Add to Cart
                 </Button>
@@ -65,9 +91,9 @@ export default function Featured({ product }) {
             </div>
           </Column>
           <Column>
-            <Image src='/featured.png' alt='featured-img' width={264} height={156} />
+            <Img src={product.images[0]} alt='featured-img' layout='fill' />
           </Column>
-        </ColumnWrapper>
+        </ColumnsWrapper>
       </Center>
     </Bg>
   );
